@@ -1,5 +1,6 @@
 package com.arman.springboot.service.impl;
 
+import com.arman.springboot.dto.UserDto;
 import com.arman.springboot.entity.User;
 import com.arman.springboot.repository.UserRepository;
 import com.arman.springboot.service.UserService;
@@ -14,8 +15,23 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserDto createUser(UserDto userDto) {
+        // Convert UserDto to User entity
+        User user = new User(
+                userDto.getId(),
+                userDto.getFirstName(),
+                userDto.getLastName(),
+                userDto.getEmail()
+        );
+        User savedUser = userRepository.save(user);
+        // Convert User entity to UserDto
+        UserDto savedUserDto = new UserDto(
+                savedUser.getId(),
+                savedUser.getFirstName(),
+                savedUser.getLastName(),
+                savedUser.getEmail()
+        );
+        return savedUserDto;
     }
 
     @Override

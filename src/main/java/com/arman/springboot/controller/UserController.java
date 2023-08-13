@@ -1,5 +1,6 @@
 package com.arman.springboot.controller;
 
+import com.arman.springboot.dto.UserDto;
 import com.arman.springboot.entity.User;
 import com.arman.springboot.service.UserService;
 import lombok.AllArgsConstructor;
@@ -17,9 +18,9 @@ public class UserController {
 
     // create user REST API
     @PostMapping("create")
-    public ResponseEntity<User> createUser(@RequestBody User user){
-        User savedUser = userService.createUser(user);
-        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+        UserDto savedUserDto = userService.createUser(userDto);
+        return new ResponseEntity<>(savedUserDto, HttpStatus.CREATED);
     }
 
     // get user by id REST API
