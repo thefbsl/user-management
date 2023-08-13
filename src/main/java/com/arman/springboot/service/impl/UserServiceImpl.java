@@ -2,6 +2,7 @@ package com.arman.springboot.service.impl;
 
 import com.arman.springboot.dto.UserDto;
 import com.arman.springboot.entity.User;
+import com.arman.springboot.mapper.AutoUserMapper;
 import com.arman.springboot.mapper.UserMapper;
 import com.arman.springboot.repository.UserRepository;
 import com.arman.springboot.service.UserService;
@@ -18,11 +19,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
     @Override
     public UserDto createUser(UserDto userDto) {
-        // Convert UserDto to User entity
-        User user = UserMapper.mapToUser(userDto);
+        // User user = UserMapper.mapToUser(userDto);
+        User user = AutoUserMapper.MAPPER.mapToUser(userDto);
+
         User savedUser = userRepository.save(user);
-        // Convert User entity to UserDto
-        UserDto savedUserDto = UserMapper.mapToUserDto(savedUser);
+
+        // UserDto savedUserDto = UserMapper.mapToUserDto(savedUser);
+        UserDto savedUserDto = AutoUserMapper.MAPPER.mapToUserDto(savedUser);
         return savedUserDto;
     }
 
@@ -32,13 +35,15 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isEmpty())
             return null;
         User user = optionalUser.get();
-        return UserMapper.mapToUserDto(user);
+        return AutoUserMapper.MAPPER.mapToUserDto(user);
+        // return UserMapper.mapToUserDto(user);
     }
 
     @Override
     public List<UserDto> getAllUsers() {
         List<User> users = userRepository.findAll();
-        return users.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
+        return users.stream().map(AutoUserMapper.MAPPER::mapToUserDto).collect(Collectors.toList());
+        // return users.stream().map(UserMapper::mapToUserDto).collect(Collectors.toList());
     }
 
     @Override
@@ -48,7 +53,8 @@ public class UserServiceImpl implements UserService {
         existingUser.setLastName(userDto.getLastName());
         existingUser.setEmail(userDto.getEmail());
         User updatedUser = userRepository.save(existingUser);
-        return UserMapper.mapToUserDto(updatedUser);
+        return AutoUserMapper.MAPPER.mapToUserDto(updatedUser);
+        // return UserMapper.mapToUserDto(updatedUser);
     }
 
     @Override
